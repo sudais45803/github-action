@@ -1,0 +1,23 @@
+
+name: Repository Event Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display event information
+        run: |
+          echo "Repository event workflow started"
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Actor: ${{ github.actor }}"
+
+      - name: Confirm workflow success
+        run: echo "Event verification completed successfully"
