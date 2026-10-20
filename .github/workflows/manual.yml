@@ -1,0 +1,34 @@
+
+name: Manual Greeting Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Enter your name"
+        required: true
+        type: string
+        default: "Student"
+      greeting:
+        description: "Enter a greeting"
+        required: true
+        type: string
+        default: "Welcome"
+      data:
+        description: "Enter an activity description"
+        required: true
+        type: string
+        default: "GitHub Actions Practice"
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display personalized greeting
+        run: |
+          echo "${{ inputs.greeting }}, ${{ inputs.name }}!"
+          echo "Activity: ${{ inputs.data }}"
+
+      - name: Confirm completion
+        run: echo "Manual workflow completed successfully"
