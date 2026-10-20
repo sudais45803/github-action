@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Run custom greeting action
-        uses: sudais45803/student-greeting-action@main
+        uses: sudais45803/student-greeting-action@v1.0.0
         id: greeting
         with:
           student-name: "DevOps Learner"
