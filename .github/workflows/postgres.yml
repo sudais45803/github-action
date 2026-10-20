@@ -1,0 +1,45 @@
+
+name: PostgreSQL Service Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  database-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: student
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: learningdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U student -d learningdb"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check PostgreSQL connection
+        env:
+          PGPASSWORD: testpassword
+        run: |
+          psql -h localhost -p 5432 -U student -d learningdb \
+            -c "SELECT 'PostgreSQL connection successful' AS result;"
+
+      - name: Create and query a test table
+        env:
+          PGPASSWORD: testpassword
+        run: |
+          psql -h localhost -p 5432 -U student -d learningdb \
+            -c "CREATE TABLE activity (id INT, status TEXT);"
+          psql -h localhost -p 5432 -U student -d learningdb \
+            -c "INSERT INTO activity VALUES (1, 'completed');"
+          psql -h localhost -p 5432 -U student -d learningdb \
+            -c "SELECT * FROM activity;"
