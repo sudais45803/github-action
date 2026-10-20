@@ -1,0 +1,21 @@
+
+name: External Event Handler
+
+on:
+  repository_dispatch:
+    types: [custom-webhook]
+
+jobs:
+  process-event:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display received event
+        run: |
+          echo "External event received successfully"
+          echo "Event type: ${{ github.event.action }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Triggered by: ${{ github.actor }}"
+
+      - name: Complete event processing
+        run: echo "External event processing completed"
