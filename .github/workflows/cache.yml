@@ -1,0 +1,28 @@
+
+name: Python Dependency Cache Demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python and cache packages
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify installed package
+        run: python -c "import requests; print('Requests version:', requests.__version__)"
