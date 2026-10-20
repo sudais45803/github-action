@@ -1,0 +1,40 @@
+
+name: Cross Platform Runner Check
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ubuntu-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect Ubuntu runner
+        run: |
+          echo "Operating system: Ubuntu"
+          uname -a
+
+  windows-check:
+    runs-on: windows-latest
+    steps:
+      - name: Inspect Windows runner
+        shell: pwsh
+        run: |
+          Write-Output "Operating system: Windows"
+          $PSVersionTable.PSVersion
+
+  macos-check:
+    runs-on: macos-latest
+    steps:
+      - name: Inspect macOS runner
+        run: |
+          echo "Operating system: macOS"
+          sw_vers
+
+  finish:
+    runs-on: ubuntu-latest
+    needs: [ubuntu-check, windows-check, macos-check]
+    steps:
+      - name: Confirm all platforms completed
+        run: echo "All three operating-system jobs completed successfully"
