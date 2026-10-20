@@ -1,0 +1,21 @@
+
+name: Custom Greeting Action Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  greeting-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run custom greeting action
+        uses: sudais45803/student-greeting-action@main
+        id: greeting
+        with:
+          student-name: "DevOps Learner"
+
+      - name: Display action output
+        run: echo "${{ steps.greeting.outputs.greeting }}"
