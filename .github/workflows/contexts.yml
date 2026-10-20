@@ -1,0 +1,35 @@
+
+name: Contexts and Conditions Demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  inspect-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display workflow context
+        run: |
+          echo "Actor: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Operating System: ${{ runner.os }}"
+          echo "Application: ${{ vars.APP_NAME }}"
+          echo "Environment: ${{ env.DEPLOY_ENV }}"
+
+        env:
+          DEPLOY_ENV: "Testing"
+
+      - name: Check repository event
+        if: contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
+        run: echo "The event is supported"
+
+      - name: Confirm successful execution
+        if: success()
+        run: echo "Previous steps completed successfully"
+
+      - name: Run final status message
+        if: always()
+        run: echo "Final status step executed"
